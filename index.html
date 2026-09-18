@@ -60,9 +60,9 @@
     .rise-photo { overflow: hidden; min-height: 320px; }
     .rise-photo img { width: 100%; height: 100%; object-fit: cover; display: block; animation: rise var(--dur) cubic-bezier(.2,.7,.2,1) both infinite; animation-delay: 0.2s; }
     @keyframes rise {
-      0%, 6% { transform: translate(var(--fx-slide), var(--fx-rise)); }
-      42%, 72% { transform: translate(0, 0); }
-      100% { transform: translate(var(--fx-slide), var(--fx-rise)); }
+      0%, 6% { transform: translateY(var(--fx-rise)); opacity: 0; }
+      42%, 72% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(var(--fx-rise)); opacity: 0; }
     }
     .stagger-frame { background: hsl(30 30% 96%); padding: 36px 28px 40px; }
     .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -75,14 +75,14 @@
     .card h3 { font-family: var(--font); font-size: 1.15rem; margin: 14px 16px 4px; }
     .card p { margin: 0 16px 16px; color: hsl(var(--muted)); font-size: 0.9rem; }
     @keyframes stagger-left {
-      0%, 6% { transform: translate(calc(var(--fx-stagger) * -1), var(--fx-stagger)); opacity: 0.92; }
-      42%, 72% { transform: translate(0, 0); opacity: 1; }
-      100% { transform: translate(calc(var(--fx-stagger) * -1), var(--fx-stagger)); opacity: 0.92; }
+      0%, 6% { transform: translateX(calc(var(--fx-stagger) * -1)); opacity: 0; }
+      42%, 72% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(calc(var(--fx-stagger) * -1)); opacity: 0; }
     }
     @keyframes stagger-right {
-      0%, 6% { transform: translate(var(--fx-stagger), var(--fx-stagger)); opacity: 0.92; }
-      42%, 72% { transform: translate(0, 0); opacity: 1; }
-      100% { transform: translate(var(--fx-stagger), var(--fx-stagger)); opacity: 0.92; }
+      0%, 6% { transform: translateX(var(--fx-stagger)); opacity: 0; }
+      42%, 72% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(var(--fx-stagger)); opacity: 0; }
     }
     .hero { position: relative; min-height: 420px; color: white; isolation: isolate; }
     .hero-img { position: absolute; inset: -12% 0; width: 100%; height: 124%; object-fit: cover; animation: drift 7s ease-in-out infinite alternate; }
@@ -129,21 +129,24 @@
     .dot strong { display: block; font-family: var(--font); font-size: 1.05rem; margin-bottom: 4px; }
     @keyframes grain { from { transform: translate3d(0,0,0); } to { transform: translate3d(8px, var(--fx-grain-shift), 0); } }
 
-    .paper.primary { background: color-mix(in hsl, hsl(var(--paper)) 90%, hsl(var(--primary))); }
-    .paper.primary::before {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12  0 0 0 0 0.42  0 0 0 0 0.58  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    }
-    .paper.primary .paper-tracks {
-      background-image:
-        repeating-linear-gradient(90deg, transparent 0 56px, hsl(var(--primary) / 0.42) 56px 57px),
-        repeating-linear-gradient(0deg, transparent 0 40px, hsl(var(--primary) / 0.22) 40px 41px);
-    }
+    .paper.primary { background: color-mix(in hsl, hsl(var(--paper)) 88%, hsl(var(--primary))); }
+    .paper.primary::before { display: none; }
+    .paper.primary .paper-tracks { display: none; }
     .paper.primary .paper-pixels {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><rect x='4' y='10' width='2' height='2' fill='%231b75ab' opacity='0.75'/><rect x='28' y='22' width='2' height='2' fill='%231b75ab' opacity='0.45'/><rect x='50' y='8' width='3' height='3' fill='%231b75ab' opacity='0.55'/><rect x='16' y='48' width='2' height='2' fill='%231b75ab' opacity='0.65'/><rect x='60' y='52' width='2' height='2' fill='%231b75ab' opacity='0.4'/><rect x='40' y='36' width='2' height='2' fill='%231b75ab' opacity='0.5'/></svg>");
+      opacity: 0.7;
+      background-image:
+        radial-gradient(circle, hsl(var(--primary) / 0.28) 1.15px, transparent 1.3px),
+        radial-gradient(circle, hsl(var(--primary) / 0.16) 2.2px, transparent 2.4px);
+      background-size: 18px 18px, 42px 42px;
+      background-position: 0 0, 12px 9px;
+      animation: pixels 22s linear infinite;
     }
     .paper.primary::after {
-      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-      background: radial-gradient(120% 80% at 80% 0%, hsl(var(--primary) / 0.14), transparent 55%);
+      content: ""; position: absolute; inset: -20% -10%; pointer-events: none; z-index: 1;
+      background:
+        radial-gradient(ellipse 70% 55% at 18% 20%, hsl(var(--primary) / 0.16), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 88% 78%, hsl(var(--primary) / 0.12), transparent 62%);
+      animation: grain 16s linear infinite alternate;
     }
     .bands { display: grid; grid-template-columns: 1fr 1fr; }
     @media (max-width: 800px) { .bands { grid-template-columns: 1fr; } }
@@ -195,7 +198,7 @@
         <div>
           <p class="kicker">1 · rise</p>
           <h2>Photo lifts into place</h2>
-          <p>~84px up and in from the right, 50% slower (~3.6s). Type stays planted.</p>
+          <p>Straight up ~84px, fade in with the move. No diagonal. Type stays planted.</p>
         </div>
         <button class="replay" data-replay="risePlay">Replay</button>
       </div>
@@ -213,7 +216,7 @@
         <div>
           <p class="kicker">2 · stagger</p>
           <h2>Cards arrive in sequence</h2>
-          <p>~60px up, 50% slower. Card 1 and 3 from the left, card 2 from the right.</p>
+          <p>Straight across only: 1 and 3 from the left, 2 from the right. Fade in. No up/down, no angles.</p>
         </div>
         <button class="replay" data-replay="staggerPlay">Replay</button>
       </div>
@@ -273,7 +276,7 @@
       <div class="stage-head">
         <div>
           <p class="kicker">4b · paper grain B · primary wash</p>
-          <h2>Same tracks and pixels, lightly tinted with brand primary</h2>
+          <h2>Different pattern: primary-tinted dot halftone</h2>
           <p>Alternates with Grain A down the page. Tenant --primary follows a rebrand; this preview uses the platform blue.</p>
         </div>
         <button class="replay" data-replay="grainPlayB">Replay</button>
@@ -283,8 +286,8 @@
         <div class="paper-pixels" aria-hidden="true"></div>
         <div class="paper-inner">
           <p class="kicker">Even paper bands · Who We Are · Locations · Blog</p>
-          <h3>The other quiet band gets a hint of primary.</h3>
-          <p>Same motion as Grain A. Only the tint changes. Odd paper sections stay grey; even ones use this.</p>
+          <h3>The other quiet band gets a hint of primary — as dots, not tracks.</h3>
+          <p>Not the track grid. Soft primary dots plus two faint color pools. Odd paper bands stay Grain A.</p>
         </div>
       </div>
     </section>
