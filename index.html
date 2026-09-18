@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JSG CMS — spice pack preview</title>
+  <style>
+    :root {
+      --navy: 218 44% 20%;
+      --cta: 21 99% 61%;
+      --bg: 30 33% 97%;
+      --paper: 0 0% 100%;
+      --ink: 36 11% 15%;
+      --muted: 28 12% 42%;
+      --line: 30 20% 86%;
+      --fx-intensity: 1;
+      --fx-rise: calc(14px * var(--fx-intensity));
+      --fx-stagger: calc(10px * var(--fx-intensity));
+      --fx-drift: calc(8% * var(--fx-intensity));
+      --fx-grain-shift: calc(18px * var(--fx-intensity));
+      --fx-grain-opacity: 0.11;
+      --band-angle: 135deg;
+      --dur: calc(900ms * var(--fx-intensity));
+      --font: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: hsl(var(--bg)); color: hsl(var(--ink)); font-family: var(--sans); line-height: 1.5; }
+    a { color: inherit; }
+    .top { position: sticky; top: 0; z-index: 20; background: hsl(var(--paper) / 0.92); backdrop-filter: blur(12px); border-bottom: 1px solid hsl(var(--line)); }
+    .top-inner { max-width: 1100px; margin: 0 auto; padding: 14px 20px 12px; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+    .brand { font-family: var(--font); font-size: 1.15rem; font-weight: 600; letter-spacing: -0.02em; }
+    .brand span { color: hsl(var(--cta)); }
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nav a { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; padding: 6px 10px; border-radius: 999px; background: hsl(30 30% 94%); }
+    .nav a:hover { background: hsl(var(--cta) / 0.16); }
+    .controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-left: auto; font-size: 0.8rem; color: hsl(var(--muted)); }
+    .controls label { display: flex; align-items: center; gap: 8px; }
+    input[type="range"] { width: 120px; accent-color: hsl(var(--cta)); }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 36px 20px 80px; }
+    .lede { max-width: 40rem; }
+    h1 { font-family: var(--font); font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.03em; }
+    .lede p { color: hsl(var(--muted)); margin: 0 0 10px; font-size: 1.05rem; }
+    .note { font-size: 0.88rem; color: hsl(var(--muted)); }
+    .stage { margin-top: 48px; background: hsl(var(--paper)); border: 1px solid hsl(var(--line)); border-radius: 20px; overflow: hidden; box-shadow: 0 18px 40px -28px hsl(28 45% 25% / 0.35); }
+    .stage-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 18px 22px 14px; border-bottom: 1px solid hsl(var(--line)); align-items: baseline; }
+    .stage-head h2 { font-family: var(--font); font-size: 1.35rem; margin: 0; }
+    .kicker { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(var(--cta)); margin: 0 0 4px; }
+    .stage-head p { margin: 4px 0 0; color: hsl(var(--muted)); font-size: 0.92rem; max-width: 38rem; }
+    .replay { border: 0; background: hsl(var(--navy)); color: white; font: inherit; font-size: 0.8rem; font-weight: 600; padding: 8px 14px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+    .frame { position: relative; overflow: hidden; }
+    .rise-frame { display: grid; grid-template-columns: 1fr 1fr; min-height: 380px; }
+    @media (max-width: 800px) { .rise-frame { grid-template-columns: 1fr; } }
+    .rise-copy { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; }
+    .rise-copy h3 { font-family: var(--font); font-size: 2rem; margin: 0 0 10px; }
+    .rise-copy p { margin: 0; color: hsl(var(--muted)); }
+    .rise-photo { overflow: hidden; min-height: 320px; }
+    .rise-photo img { width: 100%; height: 100%; object-fit: cover; display: block; animation: rise var(--dur) cubic-bezier(.2,.7,.2,1) both infinite; animation-delay: 0.2s; }
+    @keyframes rise {
+      0%, 8% { transform: translateY(var(--fx-rise)); }
+      38%, 72% { transform: translateY(0); }
+      100% { transform: translateY(var(--fx-rise)); }
+    }
+    .stagger-frame { background: hsl(30 30% 96%); padding: 36px 28px 40px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 800px) { .cards { grid-template-columns: 1fr; } }
+    .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 28px -18px hsl(28 45% 25% / 0.4); animation: stagger var(--dur) cubic-bezier(.2,.7,.2,1) both infinite; }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.16s; }
+    .card:nth-child(3) { animation-delay: 0.27s; }
+    .card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .card h3 { font-family: var(--font); font-size: 1.15rem; margin: 14px 16px 4px; }
+    .card p { margin: 0 16px 16px; color: hsl(var(--muted)); font-size: 0.9rem; }
+    @keyframes stagger {
+      0%, 6% { transform: translateY(var(--fx-stagger)); opacity: 0.92; }
+      36%, 70% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(var(--fx-stagger)); opacity: 0.92; }
+    }
+    .hero { position: relative; min-height: 420px; color: white; isolation: isolate; }
+    .hero-img { position: absolute; inset: -12% 0; width: 100%; height: 124%; object-fit: cover; animation: drift 7s ease-in-out infinite alternate; }
+    .hero-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, hsl(var(--navy) / 0.88) 0%, hsl(var(--navy) / 0.35) 58%, transparent 100%); }
+    .hero-copy { position: relative; z-index: 1; padding: 72px 40px; max-width: 28rem; }
+    .hero-copy h3 { font-family: var(--font); font-size: clamp(2rem, 4vw, 3rem); margin: 0 0 10px; letter-spacing: -0.03em; }
+    .hero-copy p { margin: 0; color: hsl(0 0% 100% / 0.82); }
+    @keyframes drift {
+      from { transform: translateY(calc(var(--fx-drift) * -1)); }
+      to { transform: translateY(var(--fx-drift)); }
+    }
+    .paper { position: relative; isolation: isolate; background: hsl(var(--paper)); padding: 48px 36px 56px; overflow: hidden; }
+    .paper::before {
+      content: ""; position: absolute; inset: -40px; pointer-events: none; z-index: 1; opacity: var(--fx-grain-opacity);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.45  0 0 0 0 0.42  0 0 0 0 0.38  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      background-size: 180px 180px; animation: grain 9s linear infinite alternate; mix-blend-mode: multiply;
+    }
+    .paper-inner { position: relative; z-index: 2; max-width: 36rem; }
+    .paper-inner h3 { font-family: var(--font); font-size: 2rem; margin: 0 0 10px; }
+    .paper-inner p { margin: 0; color: hsl(var(--muted)); }
+    .dots { display: flex; gap: 18px; margin-top: 28px; }
+    .dot { flex: 1; border: 1px solid hsl(var(--line)); border-radius: 14px; padding: 16px; background: hsl(0 0% 100% / 0.7); }
+    .dot strong { display: block; font-family: var(--font); font-size: 1.05rem; margin-bottom: 4px; }
+    @keyframes grain { from { transform: translate3d(0,0,0); } to { transform: translate3d(8px, var(--fx-grain-shift), 0); } }
+    .bands { display: grid; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 800px) { .bands { grid-template-columns: 1fr; } }
+    .band { min-height: 280px; padding: 40px 32px; color: white; display: flex; flex-direction: column; justify-content: flex-end; }
+    .band h3 { font-family: var(--font); font-size: 1.7rem; margin: 0 0 6px; }
+    .band p { margin: 0; color: hsl(0 0% 100% / 0.8); font-size: 0.95rem; }
+    .band.solid-navy { background: hsl(var(--navy)); }
+    .band.grad-navy { background: linear-gradient(var(--band-angle), hsl(var(--navy)), color-mix(in hsl, hsl(var(--navy)) 82%, white)); }
+    .band.solid-cta { background: hsl(var(--cta)); color: hsl(var(--navy)); }
+    .band.solid-cta p { color: hsl(var(--navy) / 0.75); }
+    .band.grad-cta { background: linear-gradient(var(--band-angle), hsl(var(--cta)), color-mix(in hsl, hsl(var(--cta)) 78%, white)); color: hsl(var(--navy)); }
+    .band.grad-cta p { color: hsl(var(--navy) / 0.75); }
+    .toggle-row { display: flex; gap: 8px; align-items: center; }
+    .toggle-row button { border: 1px solid hsl(var(--line)); background: white; font: inherit; font-size: 0.78rem; font-weight: 600; padding: 7px 12px; border-radius: 999px; cursor: pointer; }
+    .toggle-row button[aria-pressed="true"] { background: hsl(var(--navy)); color: white; border-color: hsl(var(--navy)); }
+    footer.page { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; color: hsl(var(--muted)); font-size: 0.88rem; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+    html[data-still="1"] { --fx-intensity: 0; }
+    html[data-still="1"] * { animation: none !important; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">JSG CMS <span>spice pack</span></div>
+      <nav class="nav">
+        <a href="#rise">Rise</a>
+        <a href="#stagger">Stagger</a>
+        <a href="#drift">Image drift</a>
+        <a href="#grain">Paper grain</a>
+        <a href="#gradient">Gradient</a>
+      </nav>
+      <div class="controls">
+        <label>Intensity <input id="intensity" type="range" min="0" max="1" step="0.05" value="1" /></label>
+        <label><input id="still" type="checkbox" /> Still (motion 0)</label>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="lede">
+      <p class="kicker">Preview · not the live CMS</p>
+      <h1>Five primitives, looping so you can see them.</h1>
+      <p>This is the spice pack at a slightly louder preview level than production (grain especially). Production stays subtler, and Theme Designer motion intensity can take it to zero.</p>
+      <p class="note">Chosen sections get the same action on every style and every template. If a style has no photo, image-drift is a no-op. Dummy photos, dummy copy.</p>
+    </div>
+    <section class="stage" id="rise">
+      <div class="stage-head">
+        <div>
+          <p class="kicker">1 · rise</p>
+          <h2>Photo lifts into place</h2>
+          <p>~12–14px up as the band enters. Type stays planted. Used on Who We Are, utility Hero, Featured Post, Owner Quote, Feature Spotlight, Testimonial card.</p>
+        </div>
+        <button class="replay" data-replay="risePlay">Replay</button>
+      </div>
+      <div class="frame rise-frame" id="risePlay">
+        <div class="rise-copy">
+          <p class="kicker">Who We Are · any style</p>
+          <h3>Independent advice, local people.</h3>
+          <p>The picture moves. The headline does not. Same rise on Style 1, 2, and 3.</p>
+        </div>
+        <div class="rise-photo"><img src="images/portrait.jpg" alt="Advisor portrait" /></div>
+      </div>
+    </section>
+    <section class="stage" id="stagger">
+      <div class="stage-head">
+        <div>
+          <p class="kicker">2 · stagger</p>
+          <h2>Cards arrive in sequence</h2>
+          <p>Children rise ~8–10px, 40–60ms apart. Coverages (including checklist), Team, Blog, Problem tiles, Locations, Reviews, Industries, Resources, Service paths.</p>
+        </div>
+        <button class="replay" data-replay="staggerPlay">Replay</button>
+      </div>
+      <div class="frame stagger-frame" id="staggerPlay">
+        <div class="cards">
+          <article class="card"><img src="images/hero.jpg" alt="" /><h3>Home</h3><p>Dwelling, contents, and liability.</p></article>
+          <article class="card"><img src="images/car.jpg" alt="" /><h3>Auto</h3><p>Second in the sequence. Same motion on every style.</p></article>
+          <article class="card"><img src="images/shop.jpg" alt="" /><h3>Business</h3><p>Third. Navy Style 2 staggers too.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="stage" id="drift">
+      <div class="stage-head">
+        <div>
+          <p class="kicker">3 · image-drift</p>
+          <h2>Hero photo moves slower than the band</h2>
+          <p>Cover image translates about 6–10% of the well. Scrim and type stay put. HeroSignature, every template, every style that has a photo.</p>
+        </div>
+        <button class="replay" data-replay="driftPlay">Replay</button>
+      </div>
+      <div class="frame hero" id="driftPlay">
+        <img class="hero-img" src="images/hero.jpg" alt="House exterior" />
+        <div class="hero-scrim"></div>
+        <div class="hero-copy">
+          <p class="kicker">HeroSignature</p>
+          <h3>Coverage that keeps up with the house.</h3>
+          <p>Watch the porch drift behind the type. That is the whole effect.</p>
+        </div>
+      </div>
+    </section>
+    <section class="stage" id="grain">
+      <div class="stage-head">
+        <div>
+          <p class="kicker">4 · paper grain + grain-drift</p>
+          <h2>Light grey texture that barely moves</h2>
+          <p>Very light noise on white/muted bands, shifting ~12–20px. Preview opacity is a bit high so you can see it; production targets ~3–4%. Never on navy/CTA fills.</p>
+        </div>
+        <button class="replay" data-replay="grainPlay">Replay</button>
+      </div>
+      <div class="frame paper" id="grainPlay">
+        <div class="paper-inner">
+          <p class="kicker">Problem · Locations · FAQ · Blog · Form reassurance</p>
+          <h3>The quiet bands should feel like paper, not empty white.</h3>
+          <p>Look at the field behind this type — a faint grey grain is sliding. Every light style of a chosen paper section gets this. Dark styles of the same section do not.</p>
+          <div class="dots">
+            <div class="dot"><strong>Style 1</strong> Same grain.</div>
+            <div class="dot"><strong>Style 2</strong> Same grain.</div>
+            <div class="dot"><strong>Style 3</strong> Same grain.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="stage" id="gradient">
+      <div class="stage-head">
+        <div>
+          <p class="kicker">5 · band-gradient</p>
+          <h2>Dark / primary fill, color to a slightly lighter mix, 135°</h2>
+          <p>Not a second brand color — color-mix toward white. Toggle is per section.</p>
+        </div>
+        <div class="toggle-row">
+          <button type="button" id="btnSolid" aria-pressed="false">Solid</button>
+          <button type="button" id="btnGrad" aria-pressed="true">Gradient</button>
+        </div>
+      </div>
+      <div class="bands" id="gradPlay">
+        <div class="band grad-navy" data-navy>
+          <p class="kicker">Navy band</p>
+          <h3>Closing CTA / Stat band / Advisor split</h3>
+          <p>Same recipe on A, B, and C.</p>
+        </div>
+        <div class="band grad-cta" data-cta>
+          <p class="kicker">CTA / primary band</p>
+          <h3>CTA Style 2 · Stat band B</h3>
+          <p>Orange to a lighter orange, still the tenant CTA token.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="page">Dummy content for a motion/texture preview. Not a client site. Intensity 0 matches Theme Designer motion intensity = 0.</footer>
+  <script>
+    const root = document.documentElement;
+    const range = document.getElementById("intensity");
+    const still = document.getElementById("still");
+    const apply = () => {
+      const v = still.checked ? 0 : Number(range.value);
+      root.style.setProperty("--fx-intensity", String(v));
+      root.toggleAttribute("data-still", still.checked || v === 0);
+    };
+    range.addEventListener("input", apply);
+    still.addEventListener("change", apply);
+    document.querySelectorAll("[data-replay]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const el = document.getElementById(btn.getAttribute("data-replay"));
+        el.querySelectorAll("*").forEach((n) => { n.style.animation = "none"; });
+        void el.offsetWidth;
+        el.querySelectorAll("*").forEach((n) => { n.style.animation = ""; });
+      });
+    });
+    const navy = document.querySelector("[data-navy]");
+    const cta = document.querySelector("[data-cta]");
+    const btnSolid = document.getElementById("btnSolid");
+    const btnGrad = document.getElementById("btnGrad");
+    const setFill = (mode) => {
+      const grad = mode === "gradient";
+      btnGrad.setAttribute("aria-pressed", String(grad));
+      btnSolid.setAttribute("aria-pressed", String(!grad));
+      navy.className = "band " + (grad ? "grad-navy" : "solid-navy");
+      cta.className = "band " + (grad ? "grad-cta" : "solid-cta");
+    };
+    btnSolid.addEventListener("click", () => setFill("solid"));
+    btnGrad.addEventListener("click", () => setFill("gradient"));
+  </script>
+</body>
+</html>
