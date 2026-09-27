@@ -173,35 +173,22 @@
     .opt-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .opt-card h3 { font-family: var(--font); font-size: 1.15rem; margin: 14px 16px 4px; }
     .opt-card p { margin: 0 16px 16px; color: hsl(var(--muted)); font-size: 0.9rem; }
-    .opt-drift img { animation: card-drift 7s ease-in-out infinite alternate; }
-    .opt-drift:nth-child(2) img { animation-delay: -2.4s; }
-    .opt-drift:nth-child(3) img { animation-delay: -4.6s; }
-    @keyframes card-drift {
-      from { transform: translateY(calc(var(--fx-card-drift) * -1)); }
-      to { transform: translateY(var(--fx-card-drift)); }
-    }
     .opt-hover { transition: transform 0.45s ease; }
     .opt-hover img { transition: transform 0.6s ease; }
     .opt-hover:hover, .opt-hover:focus-within { transform: translateY(calc(var(--fx-hover) * -1)); }
     .opt-hover:hover img, .opt-hover:focus-within img { transform: translateY(calc(var(--fx-card-drift) * -1)); }
-    .opt-bob { animation: card-bob 5.4s ease-in-out infinite alternate; }
-    .opt-bob:nth-child(2) { animation-delay: -1.8s; }
-    .opt-bob:nth-child(3) { animation-delay: -3.6s; }
-    @keyframes card-bob {
-      from { transform: translateY(calc(var(--fx-bob) * -1)); }
-      to { transform: translateY(var(--fx-bob)); }
-    }
+    .opt-push img { transform: scale(1); transition: transform 0.7s ease; }
+    .opt-push:hover img, .opt-push:focus-within img { transform: scale(calc(1 + 0.08 * var(--fx-intensity))) translateY(calc(var(--fx-hover) * -0.5)); }
     footer.page { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; color: hsl(var(--muted)); font-size: 0.88rem; }
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
-      .opt-hover, .opt-hover img, .opt-bob, .opt-drift img { transform: none !important; }
+      .opt-hover, .opt-hover img, .opt-push img { transform: none !important; }
     }
     html[data-still="1"] { --fx-intensity: 0; }
     html[data-still="1"] * { animation: none !important; transition: none !important; }
     html[data-still="1"] .opt-hover,
     html[data-still="1"] .opt-hover img,
-    html[data-still="1"] .opt-bob,
-    html[data-still="1"] .opt-drift img { transform: none !important; }
+    html[data-still="1"] .opt-push img { transform: none !important; }
   </style>
 </head>
 <body>
@@ -215,9 +202,8 @@
         <a href="#grain">Grain A</a>
         <a href="#grain-b">Grain B</a>
         <a href="#gradient">Gradient</a>
-        <a href="#card-drift">Card drift</a>
         <a href="#hover">Hover lift</a>
-        <a href="#bob">Bob</a>
+        <a href="#push">Photo push</a>
       </nav>
       <div class="controls">
         <label>Intensity <input id="intensity" type="range" min="0" max="1" step="0.05" value="1" /></label>
@@ -230,14 +216,14 @@
       <p class="kicker">Preview · not the live CMS</p>
       <h1>Five primitives, looping so you can see them.</h1>
       <p>This is the spice pack at a slightly louder preview level than production (grain especially). Production stays subtler, and Theme Designer motion intensity can take it to zero.</p>
-      <p class="note">Distances are 25% longer than the last preview. Timing is unchanged. Texture is 25% easier to see. Three card ideas are at the bottom — pick which to keep. Chosen sections get the same action on every style and every template. Dummy photos, dummy copy.</p>
+      <p class="note">Distances are 25% longer than the last preview. Timing is unchanged. Texture is 25% easier to see. Rise is on every content image. Hover lift is on coverage and team tiles. Photo push is the other hover, on blog, review, and location tiles. Dummy photos, dummy copy.</p>
     </div>
     <section class="stage" id="rise">
       <div class="stage-head">
         <div>
           <p class="kicker">1 · rise</p>
           <h2>Photo lifts into place</h2>
-          <p>Straight up ~105px, fade in with the move. No diagonal. Type stays planted. Same timing as before.</p>
+          <p>Every content image on the public site lifts ~105px as it enters. No diagonal. Words stay planted. Header and footer logos stay still. Same timing as before.</p>
         </div>
         <button class="replay" data-replay="risePlay">Replay</button>
       </div>
@@ -355,28 +341,12 @@
         </div>
       </div>
     </section>
-    <section class="stage" id="card-drift">
-      <div class="stage-head">
-        <div>
-          <p class="kicker">Option A · card photo drift</p>
-          <h2>The picture inside a tile keeps moving</h2>
-          <p>About 8% of the photo, up and down, on a slow loop. The card and the title stay put. Coverage, blog, and team tiles that have a photo. No photo, no movement.</p>
-        </div>
-      </div>
-      <div class="frame opt-frame">
-        <div class="opt-cards">
-          <article class="opt-card opt-drift"><div class="photo"><img src="images/hero.jpg" alt="" /></div><h3>Home</h3><p>The house eases inside the frame. The words do not.</p></article>
-          <article class="opt-card opt-drift"><div class="photo"><img src="images/car.jpg" alt="" /></div><h3>Auto</h3><p>Same drift, started later, still only the photo.</p></article>
-          <article class="opt-card opt-drift"><div class="photo"><img src="images/shop.jpg" alt="" /></div><h3>Business</h3><p>Always on, quieter than the hero drift.</p></article>
-        </div>
-      </div>
-    </section>
     <section class="stage" id="hover">
       <div class="stage-head">
         <div>
-          <p class="kicker">Option B · hover lift</p>
+          <p class="kicker">Hover lift · coverage and team tiles</p>
           <h2>Point at a card and it rises</h2>
-          <p>The card lifts about 12px and the photo shifts up inside it. Resting cards stay still. Keyboard focus does the same. Move the pointer onto a card.</p>
+          <p>The card lifts about 12px and the photo shifts up inside it. Coverage cards, team tiles, service paths, and client resources. Resting cards stay still. Keyboard focus does the same.</p>
         </div>
       </div>
       <div class="frame opt-frame">
@@ -387,19 +357,19 @@
         </div>
       </div>
     </section>
-    <section class="stage" id="bob">
+    <section class="stage" id="push">
       <div class="stage-head">
         <div>
-          <p class="kicker">Option C · quiet bob</p>
-          <h2>The whole tile breathes</h2>
-          <p>Each card eases about 10px up and down on its own clock, so the row never moves as one block. Small on purpose. Titles travel with the card.</p>
+          <p class="kicker">Photo push · blog, review, and location tiles</p>
+          <h2>Point at the picture and it comes forward</h2>
+          <p>The photo grows about 8% inside the frame and eases up a short way. The card and the title stay planted. Blog cards, review cards, location photos, and related posts. A different hover from the lift. Move the pointer onto a card.</p>
         </div>
       </div>
       <div class="frame opt-frame">
         <div class="opt-cards">
-          <article class="opt-card opt-bob"><div class="photo"><img src="images/hero.jpg" alt="" /></div><h3>Home</h3><p>First card, its own timing.</p></article>
-          <article class="opt-card opt-bob"><div class="photo"><img src="images/car.jpg" alt="" /></div><h3>Auto</h3><p>Offset so it is not in step with Home.</p></article>
-          <article class="opt-card opt-bob"><div class="photo"><img src="images/shop.jpg" alt="" /></div><h3>Business</h3><p>Offset again. The row feels alive.</p></article>
+          <article class="opt-card opt-push" tabindex="0"><div class="photo"><img src="images/hero.jpg" alt="" /></div><h3>From the blog</h3><p>The picture pushes forward. The title does not.</p></article>
+          <article class="opt-card opt-push" tabindex="0"><div class="photo"><img src="images/portrait.jpg" alt="" /></div><h3>A review</h3><p>Same push on the portrait. The card outline stays.</p></article>
+          <article class="opt-card opt-push" tabindex="0"><div class="photo"><img src="images/shop.jpg" alt="" /></div><h3>A location</h3><p>Hover or tab here. No fade-out.</p></article>
         </div>
       </div>
     </section>
