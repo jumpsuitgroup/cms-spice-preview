@@ -124,13 +124,11 @@
       from { transform: translate3d(0, 0, 0); }
       to { transform: translate3d(-45px, 60px, 0); }
     }
-    @keyframes woosh {
-      from { transform: translate3d(0, 0, 0); }
-      to { transform: translate3d(-110px, 80px, 0); }
-    }
-    @keyframes woosh-wash {
-      from { transform: translate3d(-10%, -8%, 0) scale(1); }
-      to { transform: translate3d(14%, 12%, 0) scale(1.18); }
+    @keyframes flyby {
+      0% { transform: translate3d(-70%, 0, 0); opacity: 0; }
+      10% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translate3d(78%, 28px, 0); opacity: 0; }
     }
     .paper-inner { position: relative; z-index: 2; max-width: 36rem; }
     .paper-inner h3 { font-family: var(--font); font-size: 2rem; margin: 0 0 10px; }
@@ -143,22 +141,36 @@
     .paper.primary { background: color-mix(in hsl, hsl(var(--paper)) 88%, hsl(var(--primary))); }
     .paper.primary::before { display: none; }
     .paper.primary .paper-tracks { display: none; }
-    .paper.primary .paper-pixels {
-      opacity: 1;
-      background-image:
-        radial-gradient(circle, hsl(var(--primary) / 0.62) 3px, transparent 4.2px),
-        radial-gradient(circle, hsl(var(--primary) / 0.4) 6px, transparent 8px);
-      background-size: 28px 28px, 72px 72px;
-      background-position: 0 0, 16px 12px;
-      animation: woosh 16s ease-in-out infinite alternate;
+    .paper.primary .paper-pixels,
+    .paper.primary .paper-tracks { display: none; }
+    .paper.primary::after { content: none; }
+    .contrail {
+      position: absolute;
+      z-index: 1;
+      left: -15%;
+      width: 130%;
+      height: 54px;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='40' shape-rendering='crispEdges'><rect x='6' y='18' width='3' height='3' fill='%231b74ac' opacity='0.35'/><rect x='16' y='14' width='4' height='4' fill='%231b74ac' opacity='0.4'/><rect x='28' y='22' width='3' height='3' fill='%231b74ac' opacity='0.28'/><rect x='38' y='12' width='3' height='3' fill='%231b74ac' opacity='0.45'/><rect x='52' y='10' width='4' height='4' fill='%231b74ac' opacity='0.7'/><rect x='58' y='14' width='3' height='3' fill='%231b74ac' opacity='0.8'/><rect x='56' y='18' width='5' height='5' fill='%231b74ac' opacity='0.55'/><rect x='66' y='16' width='4' height='4' fill='%231b74ac' opacity='0.65'/><rect x='74' y='22' width='3' height='3' fill='%231b74ac' opacity='0.5'/><rect x='104' y='9' width='4' height='4' fill='%231b74ac'/><rect x='109' y='12' width='5' height='5' fill='%231b74ac' opacity='0.9'/><rect x='115' y='8' width='3' height='3' fill='%231b74ac'/><rect x='114' y='16' width='4' height='4' fill='%231b74ac' opacity='0.85'/><rect x='120' y='13' width='4' height='4' fill='%231b74ac'/><rect x='126' y='18' width='3' height='3' fill='%231b74ac' opacity='0.75'/></svg>");
+      background-size: 150px 40px;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 34%, transparent 92%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 34%, transparent 92%);
+      animation: flyby 17s linear infinite;
     }
-    .paper.primary::after {
-      content: ""; position: absolute; inset: -30% -20%; pointer-events: none; z-index: 1;
-      background:
-        radial-gradient(ellipse 70% 55% at 18% 20%, hsl(var(--primary) / 0.28), transparent 60%),
-        radial-gradient(ellipse 55% 45% at 82% 74%, hsl(var(--primary) / 0.22), transparent 62%);
-      animation: woosh-wash 12s ease-in-out infinite alternate;
+    .contrail::after {
+      content: "";
+      position: absolute;
+      inset: -8px 8% auto -12%;
+      height: 64px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='48' shape-rendering='crispEdges'><rect x='8' y='20' width='5' height='5' fill='%231b74ac' opacity='0.28'/><rect x='22' y='14' width='4' height='4' fill='%231b74ac' opacity='0.34'/><rect x='34' y='26' width='6' height='6' fill='%231b74ac' opacity='0.22'/><rect x='48' y='16' width='4' height='4' fill='%231b74ac' opacity='0.3'/><rect x='70' y='12' width='5' height='5' fill='%231b74ac' opacity='0.4'/><rect x='80' y='20' width='4' height='4' fill='%231b74ac' opacity='0.32'/><rect x='96' y='18' width='6' height='6' fill='%231b74ac' opacity='0.24'/><rect x='112' y='14' width='4' height='4' fill='%231b74ac' opacity='0.36'/></svg>");
+      background-size: 180px 48px;
+      opacity: 0.9;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 46%, transparent 80%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 46%, transparent 80%);
     }
+    .contrail-a { top: 16%; rotate: -8deg; animation-duration: 16s; }
+    .contrail-b { top: 44%; rotate: -3deg; height: 62px; animation-duration: 21s; animation-delay: -8s; }
+    .contrail-c { top: 68%; rotate: -11deg; animation-duration: 18s; animation-delay: -13s; }
     .bands { display: grid; grid-template-columns: 1fr 1fr; }
     @media (max-width: 800px) { .bands { grid-template-columns: 1fr; } }
     .band { min-height: 280px; padding: 40px 32px; color: white; display: flex; flex-direction: column; justify-content: flex-end; }
@@ -309,18 +321,19 @@
       <div class="stage-head">
         <div>
           <p class="kicker">4b · paper grain B · primary wash</p>
-          <h2>Primary dots, with a wash that wooshes</h2>
-          <p>Larger primary dots you can see, plus two soft color pools that sweep a long way across the band. The dots travel with that sweep. Alternates with Grain A. Tenant primary follows a rebrand; this preview uses the platform blue.</p>
+          <h2>Pixel clouds left in a wake</h2>
+          <p>Three passes cross the band. Each one is a tight cluster of pixels with a thinning trail behind it, the way a plane leaves clouds. The passes are not in step. Alternates with Grain A. This preview uses the platform blue for the pixels.</p>
         </div>
         <button class="replay" data-replay="grainPlayB">Replay</button>
       </div>
       <div class="frame paper primary" id="grainPlayB">
-        <div class="paper-tracks" aria-hidden="true"></div>
-        <div class="paper-pixels" aria-hidden="true"></div>
+        <div class="contrail contrail-a" aria-hidden="true"></div>
+        <div class="contrail contrail-b" aria-hidden="true"></div>
+        <div class="contrail contrail-c" aria-hidden="true"></div>
         <div class="paper-inner">
           <p class="kicker">Even paper bands · Who We Are · Locations · Blog</p>
-          <h3>This band should feel like the color is drifting through the paper.</h3>
-          <p>Watch the dots and the soft pools travel. No track grid. Odd paper bands stay Grain A.</p>
+          <h3>A pass goes by. The pixels stay in the sky behind it.</h3>
+          <p>Head of the trail is a tight pixel cloud. Behind it the pixels thin out and lag. No track grid. Odd paper bands stay Grain A.</p>
         </div>
       </div>
     </section>
