@@ -115,9 +115,9 @@
       animation: grain 14s linear infinite alternate;
     }
     .paper-pixels {
-      opacity: 0.95;
-      background-image: radial-gradient(circle, hsl(30 8% 28% / 0.72) 2.2px, transparent 3px);
-      background-size: 22px 22px;
+      opacity: 0.5625;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><rect x='4' y='10' width='2' height='2' fill='%23665c54' opacity='0.7'/><rect x='28' y='22' width='2' height='2' fill='%23665c54' opacity='0.45'/><rect x='50' y='8' width='3' height='3' fill='%23665c54' opacity='0.55'/><rect x='16' y='48' width='2' height='2' fill='%23665c54' opacity='0.6'/><rect x='60' y='52' width='2' height='2' fill='%23665c54' opacity='0.4'/><rect x='40' y='36' width='2' height='2' fill='%23665c54' opacity='0.5'/></svg>");
+      background-size: 72px 72px;
       animation: pixels 18s linear infinite;
     }
     @keyframes pixels {
@@ -126,8 +126,8 @@
     }
     @keyframes flyby {
       0% { transform: translate3d(-70%, 0, 0); opacity: 0; }
-      10% { opacity: 1; }
-      80% { opacity: 1; }
+      10% { opacity: 0.5; }
+      80% { opacity: 0.5; }
       100% { transform: translate3d(78%, 28px, 0); opacity: 0; }
     }
     .paper-inner { position: relative; z-index: 2; max-width: 36rem; }
@@ -155,7 +155,7 @@
       background-size: 150px 40px;
       -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 34%, transparent 92%);
       mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 34%, transparent 92%);
-      animation: flyby 17s linear infinite;
+      animation: flyby 28.9s linear infinite;
     }
     .contrail::after {
       content: "";
@@ -168,9 +168,9 @@
       -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 46%, transparent 80%);
       mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 46%, transparent 80%);
     }
-    .contrail-a { top: 16%; rotate: -8deg; animation-duration: 16s; }
-    .contrail-b { top: 44%; rotate: -3deg; height: 62px; animation-duration: 21s; animation-delay: -8s; }
-    .contrail-c { top: 68%; rotate: -11deg; animation-duration: 18s; animation-delay: -13s; }
+    .contrail-a { top: 16%; rotate: -8deg; animation-duration: 27.2s; }
+    .contrail-b { top: 44%; rotate: -3deg; height: 62px; animation-duration: 35.7s; animation-delay: -13.6s; }
+    .contrail-c { top: 68%; rotate: -11deg; animation-duration: 30.6s; animation-delay: -22.1s; }
     .bands { display: grid; grid-template-columns: 1fr 1fr; }
     @media (max-width: 800px) { .bands { grid-template-columns: 1fr; } }
     .band { min-height: 280px; padding: 40px 32px; color: white; display: flex; flex-direction: column; justify-content: flex-end; }
@@ -296,8 +296,8 @@
       <div class="stage-head">
         <div>
           <p class="kicker">4a · paper grain A · grey</p>
-          <h2>Grey tracks, and dots you can see</h2>
-          <p>The dots are about 2px and dark enough to read on the paper. They travel with the field. Tracks stay lighter. Never on navy or CTA fills.</p>
+          <h2>Light grey texture that barely moves</h2>
+          <p>Very light noise on white/muted bands, shifting ~22px, a quarter easier to see than the first preview. The approved grey paper. Odd paper bands on the live site. Never on navy/CTA fills.</p>
         </div>
         <button class="replay" data-replay="grainPlay">Replay</button>
       </div>
@@ -307,7 +307,7 @@
         <div class="paper-inner">
           <p class="kicker">Problem · Locations · FAQ · Blog · Form reassurance</p>
           <h3>The quiet bands should feel like paper, not empty white.</h3>
-          <p>Look past the type at the grey dots. They are part of the paper, and they move with it. Every light style of a chosen paper section gets this. Dark styles of the same section do not.</p>
+          <p>Look at the field behind this type — a faint grey grain is sliding. Every light style of a chosen paper section gets this. Dark styles of the same section do not.</p>
           <div class="dots">
             <div class="dot"><strong>Style 1</strong> Same grain.</div>
             <div class="dot"><strong>Style 2</strong> Same grain.</div>
@@ -322,7 +322,7 @@
         <div>
           <p class="kicker">4b · paper grain B · primary wash</p>
           <h2>Pixel clouds left in a wake</h2>
-          <p>Three passes cross the band. Each one is a tight cluster of pixels with a thinning trail behind it, the way a plane leaves clouds. The passes are not in step. Alternates with Grain A. This preview uses the platform blue for the pixels.</p>
+          <p>Three passes cross the band, 70% slower than the last preview and half as solid. Each one is a tight cluster of pixels with a thinning trail behind it, the way a plane leaves clouds. The passes are not in step. Alternates with Grain A. This preview uses the platform blue for the pixels.</p>
         </div>
         <button class="replay" data-replay="grainPlayB">Replay</button>
       </div>
