@@ -115,14 +115,22 @@
       animation: grain 14s linear infinite alternate;
     }
     .paper-pixels {
-      opacity: 0.5625;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><rect x='4' y='10' width='2' height='2' fill='%23665c54' opacity='0.7'/><rect x='28' y='22' width='2' height='2' fill='%23665c54' opacity='0.45'/><rect x='50' y='8' width='3' height='3' fill='%23665c54' opacity='0.55'/><rect x='16' y='48' width='2' height='2' fill='%23665c54' opacity='0.6'/><rect x='60' y='52' width='2' height='2' fill='%23665c54' opacity='0.4'/><rect x='40' y='36' width='2' height='2' fill='%23665c54' opacity='0.5'/></svg>");
-      background-size: 72px 72px;
+      opacity: 0.95;
+      background-image: radial-gradient(circle, hsl(30 8% 28% / 0.72) 2.2px, transparent 3px);
+      background-size: 22px 22px;
       animation: pixels 18s linear infinite;
     }
     @keyframes pixels {
       from { transform: translate3d(0, 0, 0); }
       to { transform: translate3d(-45px, 60px, 0); }
+    }
+    @keyframes woosh {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-110px, 80px, 0); }
+    }
+    @keyframes woosh-wash {
+      from { transform: translate3d(-10%, -8%, 0) scale(1); }
+      to { transform: translate3d(14%, 12%, 0) scale(1.18); }
     }
     .paper-inner { position: relative; z-index: 2; max-width: 36rem; }
     .paper-inner h3 { font-family: var(--font); font-size: 2rem; margin: 0 0 10px; }
@@ -136,20 +144,20 @@
     .paper.primary::before { display: none; }
     .paper.primary .paper-tracks { display: none; }
     .paper.primary .paper-pixels {
-      opacity: 0.875;
+      opacity: 1;
       background-image:
-        radial-gradient(circle, hsl(var(--primary) / 0.28) 1.15px, transparent 1.3px),
-        radial-gradient(circle, hsl(var(--primary) / 0.16) 2.2px, transparent 2.4px);
-      background-size: 18px 18px, 42px 42px;
-      background-position: 0 0, 12px 9px;
-      animation: pixels 22s linear infinite;
+        radial-gradient(circle, hsl(var(--primary) / 0.62) 3px, transparent 4.2px),
+        radial-gradient(circle, hsl(var(--primary) / 0.4) 6px, transparent 8px);
+      background-size: 28px 28px, 72px 72px;
+      background-position: 0 0, 16px 12px;
+      animation: woosh 16s ease-in-out infinite alternate;
     }
     .paper.primary::after {
-      content: ""; position: absolute; inset: -20% -10%; pointer-events: none; z-index: 1;
+      content: ""; position: absolute; inset: -30% -20%; pointer-events: none; z-index: 1;
       background:
-        radial-gradient(ellipse 70% 55% at 18% 20%, hsl(var(--primary) / 0.16), transparent 60%),
-        radial-gradient(ellipse 50% 40% at 88% 78%, hsl(var(--primary) / 0.12), transparent 62%);
-      animation: grain 16s linear infinite alternate;
+        radial-gradient(ellipse 70% 55% at 18% 20%, hsl(var(--primary) / 0.28), transparent 60%),
+        radial-gradient(ellipse 55% 45% at 82% 74%, hsl(var(--primary) / 0.22), transparent 62%);
+      animation: woosh-wash 12s ease-in-out infinite alternate;
     }
     .bands { display: grid; grid-template-columns: 1fr 1fr; }
     @media (max-width: 800px) { .bands { grid-template-columns: 1fr; } }
@@ -276,8 +284,8 @@
       <div class="stage-head">
         <div>
           <p class="kicker">4a · paper grain A · grey</p>
-          <h2>Light grey texture that barely moves</h2>
-          <p>Very light noise on white/muted bands, shifting ~22px, a quarter easier to see than the last preview. The approved grey paper. Odd paper bands on the live site. Never on navy/CTA fills.</p>
+          <h2>Grey tracks, and dots you can see</h2>
+          <p>The dots are about 2px and dark enough to read on the paper. They travel with the field. Tracks stay lighter. Never on navy or CTA fills.</p>
         </div>
         <button class="replay" data-replay="grainPlay">Replay</button>
       </div>
@@ -287,7 +295,7 @@
         <div class="paper-inner">
           <p class="kicker">Problem · Locations · FAQ · Blog · Form reassurance</p>
           <h3>The quiet bands should feel like paper, not empty white.</h3>
-          <p>Look at the field behind this type — a faint grey grain is sliding. Every light style of a chosen paper section gets this. Dark styles of the same section do not.</p>
+          <p>Look past the type at the grey dots. They are part of the paper, and they move with it. Every light style of a chosen paper section gets this. Dark styles of the same section do not.</p>
           <div class="dots">
             <div class="dot"><strong>Style 1</strong> Same grain.</div>
             <div class="dot"><strong>Style 2</strong> Same grain.</div>
@@ -301,8 +309,8 @@
       <div class="stage-head">
         <div>
           <p class="kicker">4b · paper grain B · primary wash</p>
-          <h2>Different pattern: primary-tinted dot halftone</h2>
-          <p>Alternates with Grain A down the page. Tenant --primary follows a rebrand; this preview uses the platform blue.</p>
+          <h2>Primary dots, with a wash that wooshes</h2>
+          <p>Larger primary dots you can see, plus two soft color pools that sweep a long way across the band. The dots travel with that sweep. Alternates with Grain A. Tenant primary follows a rebrand; this preview uses the platform blue.</p>
         </div>
         <button class="replay" data-replay="grainPlayB">Replay</button>
       </div>
@@ -311,8 +319,8 @@
         <div class="paper-pixels" aria-hidden="true"></div>
         <div class="paper-inner">
           <p class="kicker">Even paper bands · Who We Are · Locations · Blog</p>
-          <h3>The other quiet band gets a hint of primary — as dots, not tracks.</h3>
-          <p>Not the track grid. Soft primary dots plus two faint color pools. Odd paper bands stay Grain A.</p>
+          <h3>This band should feel like the color is drifting through the paper.</h3>
+          <p>Watch the dots and the soft pools travel. No track grid. Odd paper bands stay Grain A.</p>
         </div>
       </div>
     </section>
